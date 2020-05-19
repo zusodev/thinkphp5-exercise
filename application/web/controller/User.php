@@ -5,10 +5,9 @@ namespace app\web\controller;
 
 use app\web\model\User as UserModel;
 use DateTime;
-use TestUserService;
+use MyModule\MyUserService;
 use think\Controller;
 use think\Request;
-use UserService;
 use function filter_var;
 use function header;
 use function is_string;
@@ -66,7 +65,7 @@ class User extends Controller
             return $this->createUserView($email, $name);
         }
 
-        $result = UserService::create([
+        $result = MyUserService::create([
             "email" => $email,
             "name" => $name,
         ]);
