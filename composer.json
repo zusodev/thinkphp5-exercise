@@ -17,12 +17,14 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "topthink/framework": "5.0.*"
+        "topthink/framework": "5.0.*",
+        "nesbot/carbon": "^2.34"
     },
     "autoload": {
         "psr-4": {
             "app\\": "application"
-        }
+        },
+        "classmap": ["myModule"]
     },
     "extra": {
         "think-path": "thinkphp"
