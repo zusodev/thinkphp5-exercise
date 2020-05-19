@@ -3,14 +3,16 @@
 
 namespace app\web\controller;
 
-
+use app\web\model\User as UserModel;
 use DateTime;
+use TestUserService;
 use think\Controller;
-use think\Db;
 use think\Request;
+use UserService;
 use function filter_var;
 use function header;
 use function is_string;
+use function model;
 use function view;
 use const FILTER_VALIDATE_EMAIL;
 
@@ -18,14 +20,25 @@ class User extends Controller
 {
     public function index()
     {
-//        $users = Db::query('SELECT * FROM users');
-        $users = Db::table('users')->select();
+        $request = Request::instance();
+        $model = model('User');
+        $email = $request->get("email");
+        if ($email) {
+            $model->where("email", "LIKE", "%{$email}%");
+        }
+        $name = $request->get("name");
+        if ($name) {
+            $model->where("name", "LIKE", "%{$name}%");
+        }
 
-//        var_dump($users);
-//        die;
+        $users = $model->select();
+
+
         return view("index", [
             "title" => "user list",
             "users" => $users,
+            "email" => $email,
+            "name" => $name,
         ]);
     }
 
@@ -53,15 +66,10 @@ class User extends Controller
             return $this->createUserView($email, $name);
         }
 
-        $user = [
+        $result = UserService::create([
             "email" => $email,
             "name" => $name,
-        ];
-        $now = (new DateTime())->format("Y-m-d H:i:s");
-        $user["created_at"] = $now;
-        $user["updated_at"] = $now;
-
-        $result = Db::table("users")->insert($user);
+        ]);
 
         return $this->createUserView($email, $name, $result);
     }
@@ -74,8 +82,7 @@ class User extends Controller
             header('Location: /web/user/index');
             die;
         }
-        $user = Db::table("users")
-            ->where(["id" => $request->get("id")])
+        $user = UserModel::where(["id" => $request->get("id")])
             ->find();
 
         if (empty($user)) {
@@ -96,8 +103,7 @@ class User extends Controller
             header('Location: /web/user/index');
             die;
         }
-        $user = Db::table("users")
-            ->where(["id" => $request->post("id")])
+        $user = UserModel::where(["id" => $request->post("id")])
             ->find();
         if (!$user) {
             header('Location: /web/user/index');
@@ -121,12 +127,10 @@ class User extends Controller
             "name" => $name,
             "updated_at" => (new DateTime())->format("Y-m-d H:i:s"),
         ];
-        Db::table("users")
-            ->where(["id" => $id])
+        UserModel::where(["id" => $id])
             ->update($user);
 
-        $user = Db::table("users")
-            ->where(["id" => $request->post("id")])
+        $user = UserModel::where(["id" => $request->post("id")])
             ->find();
 
         return $this->fetch('edit', [
@@ -146,8 +150,7 @@ class User extends Controller
         }
 
 
-        Db::table("users")
-            ->where(["id" => $request->request("id")])
+        UserModel::where(["id" => $request->post("id")])
             ->delete();
         header('Location: /web/user/index');
         die;
