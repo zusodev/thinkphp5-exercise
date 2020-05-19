@@ -67,6 +67,23 @@ class User extends Controller
         return $this->createUserView($email, $name, $result);
     }
 
+    public function destory()
+    {
+        $request = Request::instance();
+
+        if (!$request->post("id")) {
+            header('Location: /web/user/index');
+            die;
+        }
+
+
+        Db::table("users")
+            ->where(["id" => $request->request("id")])
+            ->delete();
+        header('Location: /web/user/index');
+        die;
+    }
+
     private function createUserView($email = '', $name = '', $result = false)
     {
         return $this->fetch('create', [
