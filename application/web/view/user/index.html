@@ -79,7 +79,8 @@
     }
 
     function toEditPage(id) {
-
+        const urlSearchParams = new URLSearchParams({id: id});
+        location.href = `/web/user/edit?${urlSearchParams.toString()}`;
     }
 
     $("#add-btn").click(function () {
