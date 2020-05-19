@@ -1,2 +1,6 @@
 *
+!bootstrap.min.css
+!bootstrap.min.js
+!jquery-3.5.1.slim.min.js
+!popper.min.js
 !.gitignore

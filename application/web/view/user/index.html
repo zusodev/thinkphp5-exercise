@@ -1,10 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Index</title>
-</head>
-<body>
-<h4>User Index</h4>
-</body>
-</html>
+{extend name="common/base" /}
+{block name="content"}
+<h4 style="margin-top: 10rem;">User</h4>
+<div class="row" style="margin: 1rem 0;">
+    <div class="col-md-12">
+        <button id="add-btn" class="btn btn-primary">Add User Page</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">name</th>
+                <th scope="col">email</th>
+                <th scope="col">created_at</th>
+                <th scope="col">updated_at</th>
+                <th>operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='users' id='user'}
+            <tr>
+                <td>{$user.id}</td>
+                <td>{$user.name}</td>
+                <td>{$user.email}</td>
+                <td>{$user.created_at}</td>
+                <td>{$user.updated_at}</td>
+                <td>
+                    <button class="btn btn-info" onclick="toEditPage({$user.id})">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="openDeleteModal({$user.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+    function openDeleteModal(id) {
+
+    }
+
+    function toEditPage(id) {
+
+    }
+
+    $("#add-btn").click(function () {
+        location.href = '/web/user/create/';
+    });
+</script>
+{/block}
+
+

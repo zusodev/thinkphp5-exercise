@@ -12,18 +12,22 @@ use function filter_var;
 use function header;
 use function is_string;
 use function var_dump;
+use function view;
 use const FILTER_VALIDATE_EMAIL;
 
 class User extends Controller
 {
     public function index()
     {
-        $users = Db::query('SELECT * FROM users');
+//        $users = Db::query('SELECT * FROM users');
         $users = Db::table('users')->select();
-        var_dump($users);
-        die;
-//        return view("index");
-//        return $this->fetch();
+
+//        var_dump($users);
+//        die;
+        return view("index", [
+            "title" => "user list",
+            "users" => $users,
+        ]);
     }
 
     public function create()
