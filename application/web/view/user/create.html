@@ -1,0 +1,45 @@
+{extend name="common/base" /}
+{block name="content"}
+<h4 style="margin-top: 10rem;">User</h4>
+<div class="row" style="margin: 1rem 0;">
+    <div class="col-md-12">
+        <button id="user-list-btn" class="btn btn-primary">back</button>
+    </div>
+</div>
+{if condition="!empty($success)"}
+<div class="row">
+    <div class="col-md-4">
+        <div class="alert alert-primary" role="alert">
+            Add User Success !
+        </div>
+    </div>
+</div>
+{/if}
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" action="/web/user/store">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" value="{$email}">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{$name}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+    $("#user-list-btn").click(function () {
+        location.href = '/web/user/index/';
+    });
+</script>
+{/block}
+
+

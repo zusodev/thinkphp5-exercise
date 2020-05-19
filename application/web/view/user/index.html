@@ -1,0 +1,115 @@
+{extend name="common/base" /}
+{block name="content"}
+<h4 style="margin-top: 10rem;">User</h4>
+<div class="row" style="margin: 1rem 0;">
+    <div class="col-md-12">
+        <button id="add-btn" class="btn btn-primary">Add User Page</button>
+    </div>
+</div>
+<div class="row" style="margin: 2rem;">
+    <div class="col-md-12">
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{$email}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{$name}">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">name</th>
+                <th scope="col">email</th>
+                <th scope="col">created_at</th>
+                <th scope="col">updated_at</th>
+                <th>operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='users' id='user'}
+            <tr>
+                <td>{$user.id}</td>
+                <td>{$user.name}</td>
+                <td>{$user.email}</td>
+                <td>{$user.created_at}</td>
+                <td>{$user.updated_at}</td>
+                <td>
+                    <button class="btn btn-info" onclick="toEditPage({$user.id})">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="openDeleteModal({$user.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Confirm ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="deleteUser()" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="delete-form" method="post" action="/web/user/destory" style="display: none">
+    <input id="id" name="id">
+</form>
+{/block}
+
+{block name="javascript"}
+<script>
+    function openDeleteModal(id) {
+        $('#delete-modal').modal();
+        $("#id").val(id);
+        $("#delete-form").attr('action', `/web/user/destory`);
+    }
+
+    function deleteUser() {
+        $("#delete-form").submit();
+    }
+
+    function toEditPage(id) {
+        const urlSearchParams = new URLSearchParams({id: id});
+        location.href = `/web/user/edit?${urlSearchParams.toString()}`;
+    }
+
+    $("#add-btn").click(function () {
+        location.href = '/web/user/create/';
+    });
+</script>
+{/block}
+
+
+
